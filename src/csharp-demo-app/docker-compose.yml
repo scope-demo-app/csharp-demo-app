@@ -1,0 +1,35 @@
+version: "3.4"
+
+services:
+  
+  sqlserver:
+    image: mcmoe/mssqldocker
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Rest@erver01
+      - MSSQL_PID=Express
+      - MSSQL_DB=Restaurants
+      - MSSQL_USER=restUser
+      - MSSQL_PASSWORD=restPassw0rd
+
+  csharp-demo-app:
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - ~/.scope:/root/.scope
+    environment:
+      - CI
+      - SCOPE_DSN
+      - CIRCLECI
+      - CIRCLE_BUILD_NUM
+      - CIRCLE_BUILD_URL
+      - JENKINS_URL
+      - BUILD_ID
+      - BUILD_NUMBER
+      - BUILD_URL
+      - GIT_COMMIT=$GIT_COMMIT
+    links:
+      - sqlserver
