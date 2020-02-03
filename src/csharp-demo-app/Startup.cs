@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,9 +37,16 @@ namespace csharp_demo_app
                         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod();
                     });
             });
-            
             using var ctx = new ImagesContext();
-            ctx.Database.Migrate();
+            try
+            {
+                ctx.Database.Migrate();
+            }
+            catch
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(20));
+                ctx.Database.Migrate();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +60,7 @@ namespace csharp_demo_app
             app.UseCors("all"); 
             app.UseRouting();
             app.UseAuthorization();
+            app.AddScopeAgent();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
