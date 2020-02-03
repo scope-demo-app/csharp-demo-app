@@ -42,7 +42,7 @@ services:
     links:
       - sqlserver
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "curl", "-f", "http://localhost/images/restaurant/00000000-0000-0000-0000-000000000000"]
       start_period: 10s
       timeout: 10s
       retries: 3
