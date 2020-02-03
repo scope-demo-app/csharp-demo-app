@@ -6,6 +6,8 @@ services:
     image: mcmoe/mssqldocker
     ports:
       - 1433:1433
+    volumes:
+      - sqlserver-data:/var/opt/mssql/data
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Rest@erver01
@@ -13,6 +15,12 @@ services:
       - MSSQL_DB=Restaurants
       - MSSQL_USER=restUser
       - MSSQL_PASSWORD=restPassw0rd
+    healthcheck:
+      test: ["CMD", "echo", "-e", "'\x1dclose\x0d'", "|", "telnet", "localhost", "1433"]
+      start_period: 10s
+      timeout: 10s
+      retries: 3
+      interval: 20s
 
   csharp-demo-app:
     build: .
@@ -33,3 +41,12 @@ services:
       - GIT_COMMIT=$GIT_COMMIT
     links:
       - sqlserver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      start_period: 10s
+      timeout: 10s
+      retries: 3
+      interval: 20s
+      
+volumes:
+  sqlserver-data:
