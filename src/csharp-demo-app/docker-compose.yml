@@ -22,7 +22,7 @@ services:
       - ~/.scope:/root/.scope
     environment:
       - CI
-      - SCOPE_DSN
+      - SCOPE_DSN=https://413d66d9314b4a1e9d7ea8674ce5d88c@app.scope.dev/
       - CIRCLECI
       - CIRCLE_BUILD_NUM
       - CIRCLE_BUILD_URL
