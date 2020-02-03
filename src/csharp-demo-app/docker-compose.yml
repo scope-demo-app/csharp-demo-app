@@ -17,10 +17,10 @@ services:
       - MSSQL_PASSWORD=restPassw0rd
     healthcheck:
       test: ["CMD", "echo", "-e", "'\x1dclose\x0d'", "|", "telnet", "localhost", "1433"]
-      start_period: 10s
+      start_period: 20s
       timeout: 10s
       retries: 3
-      interval: 20s
+      interval: 1m
 
   csharp-demo-app:
     build: .
@@ -43,10 +43,10 @@ services:
       - sqlserver
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/images/restaurant/00000000-0000-0000-0000-000000000000"]
-      start_period: 10s
+      start_period: 20s
       timeout: 10s
       retries: 3
-      interval: 20s
+      interval: 1m
       
 volumes:
   sqlserver-data:

@@ -55,6 +55,7 @@ namespace csharp_demo_app.Controllers
             }
             else
             {
+                _logger.LogCritical("No images were found in the request");
                 throw new Exception("No images were found in the request");
             }
 
@@ -98,12 +99,15 @@ namespace csharp_demo_app.Controllers
         {
             _logger.LogInformation($"Deleting image: {imageId}");
             await using var imagesCtx = new ImagesContext();
-
-            var image = new ImagesEntity {Id = imageId}; 
-            imagesCtx.ImagesData.Remove(image);
             
-            if (await imagesCtx.SaveChangesAsync(cancellationToken) == 0)
+            var image = await imagesCtx.ImagesData
+                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken);
+            if (image == null)
                 return NotFound();
+            
+            imagesCtx.ImagesData.Remove(image);
+            if (await imagesCtx.SaveChangesAsync(cancellationToken) == 0)
+                return Problem("The image can't be deleted.");
             
             return Ok();
         }
