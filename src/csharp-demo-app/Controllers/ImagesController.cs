@@ -63,7 +63,7 @@ namespace csharp_demo_app.Controllers
             await using var imagesCtx = new ImagesContext();
             await using var memStream = new MemoryStream();
 
-            await fileStream.CopyToAsync(memStream, cancellationToken).ConfigureAwait(false);
+            await fileStream.CopyToAsync(memStream, cancellationToken);
 
             var imgData = new ImagesEntity
             {
@@ -73,7 +73,7 @@ namespace csharp_demo_app.Controllers
             };
             imagesCtx.ImagesData.Add(imgData);
 
-            await imagesCtx.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            await imagesCtx.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] Images saved with Id: {Id}", restaurantId, imgData.Id);
             return imgData.Id;
@@ -86,8 +86,7 @@ namespace csharp_demo_app.Controllers
             await using var imagesCtx = new ImagesContext();
 
             var image = await imagesCtx.ImagesData
-                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken)
-                .ConfigureAwait(false);
+                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken);
             if (image == null)
                 return NotFound();
 
@@ -103,7 +102,7 @@ namespace csharp_demo_app.Controllers
             var image = new ImagesEntity {Id = imageId}; 
             imagesCtx.ImagesData.Remove(image);
             
-            if (await imagesCtx.SaveChangesAsync(cancellationToken).ConfigureAwait(false) == 0)
+            if (await imagesCtx.SaveChangesAsync(cancellationToken) == 0)
                 return NotFound();
             
             return Ok();
