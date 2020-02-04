@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY . ./
 RUN dotnet build
-ENTRYPOINT ["/root/.dotnet/tools/scope-run", "dotnet", "test"]
+ENTRYPOINT ["/root/.dotnet/tools/scope-run", "dotnet", "test", "--debug"]
