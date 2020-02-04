@@ -1,0 +1,57 @@
+version: "3.4"
+
+services:
+  
+  sqlserver:
+    image: mcmoe/mssqldocker
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlserver-data:/var/opt/mssql/data
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Rest@erver01
+      - MSSQL_PID=Express
+      - MSSQL_DB=Restaurants
+      - MSSQL_USER=restUser
+      - MSSQL_PASSWORD=restPassw0rd
+    healthcheck:
+      test: ["CMD", "echo", "-e", "'\x1dclose\x0d'", "|", "telnet", "localhost", "1433"]
+      start_period: 20s
+      timeout: 10s
+      retries: 3
+      interval: 1m
+
+  csharp-demo-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-Build
+    ports:
+      - 8080:80
+    volumes:
+      - ~/.scope:/root/.scope
+    environment:
+      - CI
+      - SCOPE_DSN
+      - CIRCLECI
+      - CIRCLE_BUILD_NUM
+      - CIRCLE_BUILD_URL
+      - JENKINS_URL
+      - BUILD_ID
+      - BUILD_NUMBER
+      - BUILD_URL
+      - GIT_COMMIT=$GIT_COMMIT
+      - SCOPE_INSTRUMENTATION_HTTP_PAYLOAD=True
+      - SCOPE_INSTRUMENTATION_DB_STATEMENT_VALUES=True
+      - SCOPE_CODE_PATH=True
+    links:
+      - sqlserver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      start_period: 20s
+      timeout: 10s
+      retries: 3
+      interval: 1m
+      
+volumes:
+  sqlserver-data:
