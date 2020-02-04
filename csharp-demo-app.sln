@@ -2,6 +2,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp-demo-app", "src\csharp-demo-app\csharp-demo-app.csproj", "{8038FFA1-8ECF-4DC2-A33B-59BF3A8BFF6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp-demo-app.test", "test\csharp-demo-app.test\csharp-demo-app.test.csproj", "{D60E0896-E481-4454-9D58-C4DBA936DE67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{FBFDDB88-96FA-4044-B3E7-7F558D19413D}"
+ProjectSection(SolutionItems) = preProject
+	scope.yml = scope.yml
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +19,9 @@ Global
 		{8038FFA1-8ECF-4DC2-A33B-59BF3A8BFF6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8038FFA1-8ECF-4DC2-A33B-59BF3A8BFF6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8038FFA1-8ECF-4DC2-A33B-59BF3A8BFF6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

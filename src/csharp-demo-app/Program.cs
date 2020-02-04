@@ -13,6 +13,7 @@ namespace csharp_demo_app
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("Starting...");
             CreateHostBuilder(args).Build().Run();
         }
 

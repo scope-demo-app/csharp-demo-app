@@ -37,6 +37,8 @@ namespace csharp_demo_app
                         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyMethod();
                     });
             });
+            services.AddHealthChecks();
+            Console.WriteLine("Applying migrations...");
             using var ctx = new ImagesContext();
             try
             {
@@ -52,6 +54,7 @@ namespace csharp_demo_app
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Console.WriteLine("Configuring middlewares...");
             app.UseResponseCompression();
             if (env.IsDevelopment())
             {
@@ -61,7 +64,11 @@ namespace csharp_demo_app
             app.UseRouting();
             app.UseAuthorization();
             app.AddScopeAgent();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
         }
     }
 }
