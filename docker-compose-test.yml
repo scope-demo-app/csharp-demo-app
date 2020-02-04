@@ -49,6 +49,7 @@ services:
       - GITHUB_WORKSPACE=/app
       - GITHUB_SHA
       - GITHUB_REF
+      - SCOPE_CODE_PATH
     links:
       - sqlserver
     healthcheck:
