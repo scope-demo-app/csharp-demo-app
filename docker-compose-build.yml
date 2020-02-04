@@ -33,6 +33,9 @@ services:
     environment:
       - CI
       - SCOPE_DSN
+      - SCOPE_SERVICE
+      - SCOPE_COMMIT_SHA
+      - SCOPE_REPOSITORY
       - CIRCLECI
       - CIRCLE_BUILD_NUM
       - CIRCLE_BUILD_URL
@@ -41,6 +44,11 @@ services:
       - BUILD_NUMBER
       - BUILD_URL
       - GIT_COMMIT=$GIT_COMMIT
+      - GITHUB_WORKFLOW
+      - GITHUB_REPOSITORY
+      - GITHUB_WORKSPACE=/app
+      - GITHUB_SHA
+      - GITHUB_REF
       - SCOPE_INSTRUMENTATION_HTTP_PAYLOAD=True
       - SCOPE_INSTRUMENTATION_DB_STATEMENT_VALUES=True
       - SCOPE_CODE_PATH=True

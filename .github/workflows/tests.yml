@@ -15,3 +15,4 @@ jobs:
         docker-compose -f ./docker-compose-test.yml down
       env:
         SCOPE_DSN: ${{ secrets.SCOPE_DSN }}
+        SCOPE_CODE_PATH: True
