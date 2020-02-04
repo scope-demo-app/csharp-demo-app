@@ -44,6 +44,7 @@ services:
       - SCOPE_INSTRUMENTATION_HTTP_PAYLOAD=True
       - SCOPE_INSTRUMENTATION_DB_STATEMENT_VALUES=True
       - SCOPE_CODE_PATH=True
+      - SCOPE_TRACER_DISPATCHER_CONTEXTS_SAMPLED_SPANS=True
     links:
       - sqlserver
     healthcheck:

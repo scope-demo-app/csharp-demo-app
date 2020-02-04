@@ -7,6 +7,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{FBFDDB88-96FA-4044-B3E7-7F558D19413D}"
 ProjectSection(SolutionItems) = preProject
 	scope.yml = scope.yml
+	docker-compose-build.yml = docker-compose-build.yml
+	docker-compose-test.yml = docker-compose-test.yml
+	Dockerfile-Build = Dockerfile-Build
+	Dockerfile-Test = Dockerfile-Test
+	README.md = README.md
 EndProjectSection
 EndProject
 Global

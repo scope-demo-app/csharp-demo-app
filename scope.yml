@@ -1,6 +1,11 @@
 scope:
   code_path: true
   
+  tracer:
+    dispatcher:
+      contexts:
+        sampled_spans: true
+  
   instrumentation:
     http:
       payload: true
