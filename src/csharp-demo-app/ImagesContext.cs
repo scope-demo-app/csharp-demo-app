@@ -6,7 +6,7 @@ namespace csharp_demo_app
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=sqlserver;Initial Catalog=Restaurants;Persist Security Info=True;User ID=restUser;Password=restPassw0rd");
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=Restaurants;Persist Security Info=True;User ID=restUser;Password=restPassw0rd");
         }
 
         public DbSet<ImagesEntity> ImagesData { get; set; }

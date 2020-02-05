@@ -35,23 +35,14 @@ namespace csharp_demo_app.Controllers
         }
 
         [HttpPost("restaurant/{restaurantId}")]
-        public async Task<Guid> PostImage(Guid restaurantId, CancellationToken cancellationToken)
+        public async Task<IActionResult> PostImage(Guid restaurantId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[RestaurantId: {restaurantId}] Storing a new image", restaurantId);
 
             string contentType;
             Stream fileStream;
 
-            if (Request.HasFormContentType)
-            {
-                if (Request.Form?.Files == null || Request.Form.Files.Count == 0)
-                    throw new ArgumentException("The request form files is null or empty");
-
-                var file = Request.Form.Files[0];
-                contentType = file.ContentType;
-                fileStream = file.OpenReadStream();
-            }
-            else if (Request.ContentType.StartsWith("image/"))
+            if (Request.ContentType.StartsWith("image/"))
             {
                 contentType = Request.ContentType;
                 fileStream = Request.Body;
@@ -59,7 +50,7 @@ namespace csharp_demo_app.Controllers
             else
             {
                 _logger.LogCritical("No images were found in the request");
-                throw new Exception("No images were found in the request");
+                return BadRequest("No images were found in the request");
             }
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] ContentType: {contentType}", restaurantId, contentType);
@@ -80,7 +71,7 @@ namespace csharp_demo_app.Controllers
             await imagesCtx.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] Images saved with Id: {Id}", restaurantId, imgData.Id);
-            return imgData.Id;
+            return Ok(imgData.Id);
         }
 
         [HttpGet("{imageId}")]

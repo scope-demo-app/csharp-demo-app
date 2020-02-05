@@ -7,6 +7,8 @@ scope:
         sampled_spans: true
   
   instrumentation:
+    tests_frameworks:
+      fail_retries: 4
     http:
       payload: true
     db:
