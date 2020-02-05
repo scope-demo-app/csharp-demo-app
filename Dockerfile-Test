@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1
-RUN dotnet tool install --global ScopeAgent.Runner --version 0.1.22-beta.3
+RUN dotnet tool install --global ScopeAgent.Runner --version 0.1.22-beta.4
 WORKDIR /app
 
 COPY . ./
