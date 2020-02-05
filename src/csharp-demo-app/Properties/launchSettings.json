@@ -14,7 +14,8 @@
       "launchBrowser": true,
       "launchUrl": "images",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SCOPE_CODE_PATH": "False"
       }
     },
     "csharp_demo_app": {
@@ -23,7 +24,8 @@
       "launchUrl": "images",
       "applicationUrl": "http://0.0.0.0:8080",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SCOPE_CODE_PATH": "False"
       }
     }
   }

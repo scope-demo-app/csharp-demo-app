@@ -11,4 +11,5 @@ namespace csharp_demo_app
 
         public DbSet<ImagesEntity> ImagesData { get; set; }
     }
+    
 }

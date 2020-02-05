@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
-RUN dotnet tool install --global ScopeAgent.Runner
+RUN dotnet tool install --global ScopeAgent.Runner  --version 0.1.22-beta.3
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers

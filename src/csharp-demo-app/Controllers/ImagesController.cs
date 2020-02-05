@@ -25,13 +25,13 @@ namespace csharp_demo_app.Controllers
         }
 
         [HttpGet("restaurant/{restaurantId}")]
-        public IAsyncEnumerable<Guid> GetRestaurantImages(Guid restaurantId)
+        public async  Task<Guid[]> GetRestaurantImages(Guid restaurantId)
         {
             _logger.LogInformation($"Getting images for RestaurantId: {restaurantId}");
-            return new ImagesContext().ImagesData
+            await using var ctx = new ImagesContext();
+            return await ctx.ImagesData
                 .Where(i => i.RestaurantId == restaurantId)
-                .Select(i => i.Id)
-                .AsAsyncEnumerable();
+                .Select(i => i.Id).ToArrayAsync().ConfigureAwait(false);
         }
 
         [HttpPost("restaurant/{restaurantId}")]
@@ -67,7 +67,7 @@ namespace csharp_demo_app.Controllers
             await using var imagesCtx = new ImagesContext();
             await using var memStream = new MemoryStream();
 
-            await fileStream.CopyToAsync(memStream, cancellationToken);
+            await fileStream.CopyToAsync(memStream, cancellationToken).ConfigureAwait(false);
 
             var imgData = new ImagesEntity
             {
@@ -77,7 +77,7 @@ namespace csharp_demo_app.Controllers
             };
             imagesCtx.ImagesData.Add(imgData);
 
-            await imagesCtx.SaveChangesAsync(cancellationToken);
+            await imagesCtx.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] Images saved with Id: {Id}", restaurantId, imgData.Id);
             return imgData.Id;
@@ -90,7 +90,7 @@ namespace csharp_demo_app.Controllers
             await using var imagesCtx = new ImagesContext();
 
             var image = await imagesCtx.ImagesData
-                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken);
+                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
             if (image == null)
                 return NotFound();
 
@@ -104,7 +104,7 @@ namespace csharp_demo_app.Controllers
             await using var imagesCtx = new ImagesContext();
             
             var image = await imagesCtx.ImagesData
-                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken);
+                .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
             if (image == null)
                 return NotFound();
             
