@@ -49,22 +49,23 @@ namespace csharp_demo_app.Controllers
             }
             else
             {
-                _logger.LogCritical("No images were found in the request");
-                return BadRequest("No images were found in the request");
+                _logger.LogCritical("No images were found in the request. Invalid ContentType = " + Request.ContentType);
+                return BadRequest("No images were found in the request. Invalid ContentType = " + Request.ContentType);
             }
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] ContentType: {contentType}", restaurantId, contentType);
 
             await using var imagesCtx = new ImagesContext();
-            await using var memStream = new MemoryStream();
-
-            await fileStream.CopyToAsync(memStream, cancellationToken).ConfigureAwait(false);
-
+            
+            var bytesData = await Utils.GetBytesFromStreamAsync(fileStream, cancellationToken).ConfigureAwait(false);
+            if (bytesData.Length == 0)
+                throw new Exception("Image data length must be greater than 0");
+            
             var imgData = new ImagesEntity
             {
                 RestaurantId = restaurantId,
                 ContentType = contentType,
-                ContentData = memStream.ToArray()
+                ContentData = bytesData
             };
             imagesCtx.ImagesData.Add(imgData);
 

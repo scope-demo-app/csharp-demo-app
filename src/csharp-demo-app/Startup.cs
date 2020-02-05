@@ -57,10 +57,6 @@ namespace csharp_demo_app
         {
             Console.WriteLine("Configuring middlewares...");
             app.UseResponseCompression();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
             app.UseCors("all"); 
             app.UseRouting();
             app.UseAuthorization();

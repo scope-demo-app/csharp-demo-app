@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>csharp_demo_app.benchmark</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ScopeAgent.Extensions.BenchmarkDotNet" Version="0.1.22-beta.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\csharp-demo-app\csharp-demo-app.csproj" />
+    </ItemGroup>
+
+</Project>

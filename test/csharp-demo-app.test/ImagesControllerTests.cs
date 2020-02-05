@@ -85,6 +85,27 @@ namespace csharp_demo_app.test
                 Assert.True(false, "The image data is not the same.");
         }
 
+        
+        [Fact]
+        public async Task Should_Throw_Exception_On_Post_Empty_Image_To_Restaurant()
+        {
+            var url = $"/images/restaurant/{_restaurantId}";
+            var content = new ByteArrayContent(new byte[0]);
+            content.Headers.ContentType = new MediaTypeHeaderValue(_imageContentType);
+
+            Exception exception = null;
+            try
+            {
+                var response = await _client.PostAsync(url, content);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+            
+            Assert.NotNull(exception);
+        }
+        
         [Fact]
         public async Task Should_Get_Images_From_Restaurant()
         {

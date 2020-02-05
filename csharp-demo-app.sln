@@ -12,7 +12,10 @@ ProjectSection(SolutionItems) = preProject
 	Dockerfile-Build = Dockerfile-Build
 	Dockerfile-Test = Dockerfile-Test
 	README.md = README.md
+	entrypoint-test.sh = entrypoint-test.sh
 EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csharp-demo-app.benchmark", "test\csharp-demo-app.benchmark\csharp-demo-app.benchmark.csproj", "{F597E21E-1256-49E9-8C0B-2B6260D76537}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,5 +31,9 @@ Global
 		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D60E0896-E481-4454-9D58-C4DBA936DE67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F597E21E-1256-49E9-8C0B-2B6260D76537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F597E21E-1256-49E9-8C0B-2B6260D76537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F597E21E-1256-49E9-8C0B-2B6260D76537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F597E21E-1256-49E9-8C0B-2B6260D76537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -3,5 +3,6 @@ RUN dotnet tool install --global ScopeAgent.Runner --version 0.1.22-beta.4
 WORKDIR /app
 
 COPY . ./
-RUN dotnet build
-ENTRYPOINT ["/root/.dotnet/tools/scope-run", "dotnet", "test", "--debug"]
+RUN dotnet build -c Release
+RUN chmod +x entrypoint-test.sh
+ENTRYPOINT ["./entrypoint-test.sh"]
