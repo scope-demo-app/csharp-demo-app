@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace csharp_demo_app
@@ -6,10 +7,13 @@ namespace csharp_demo_app
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=sqlserver;Initial Catalog=Restaurants;Persist Security Info=True;User ID=restUser;Password=restPassw0rd");
+            var host = Environment.GetEnvironmentVariable("DBHOST") ?? "sqlserver";
+            var dbname = Environment.GetEnvironmentVariable("DBNAME") ?? "Restaurants";
+            var username = Environment.GetEnvironmentVariable("DBUSER") ?? "restUser";
+            var password = Environment.GetEnvironmentVariable("DBPASSWORD") ?? "restPassw0rd";
+            optionsBuilder.UseSqlServer($"Data Source={host};Initial Catalog={dbname};Persist Security Info=True;User ID={username};Password={password}");
         }
 
         public DbSet<ImagesEntity> ImagesData { get; set; }
     }
-    
 }
