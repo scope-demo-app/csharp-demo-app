@@ -25,13 +25,15 @@ namespace csharp_demo_app.Controllers
         }
 
         [HttpGet("restaurant/{restaurantId}")]
-        public async  Task<Guid[]> GetRestaurantImages(Guid restaurantId)
+        public IAsyncEnumerable<Guid> GetRestaurantImages(Guid restaurantId)
         {
             _logger.LogInformation($"Getting images for RestaurantId: {restaurantId}");
-            await using var ctx = new ImagesContext();
-            return await ctx.ImagesData
+            var ctx = new ImagesContext();
+            Response.RegisterForDisposeAsync(ctx);
+            return ctx.ImagesData
                 .Where(i => i.RestaurantId == restaurantId)
-                .Select(i => i.Id).ToArrayAsync().ConfigureAwait(false);
+                .Select(i => i.Id)
+                .AsAsyncEnumerable();
         }
 
         [HttpPost("restaurant/{restaurantId}")]
