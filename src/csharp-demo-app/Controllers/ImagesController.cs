@@ -27,7 +27,7 @@ namespace csharp_demo_app.Controllers
         [HttpGet("restaurant/{restaurantId}")]
         public IAsyncEnumerable<Guid> GetRestaurantImages(Guid restaurantId)
         {
-            _logger.LogInformation($"Getting images for RestaurantId: {restaurantId}");
+            _logger.LogInformation($"Getting all images for RestaurantId: {restaurantId}");
             var ctx = new ImagesContext();
             Response.RegisterForDisposeAsync(ctx);
             return ctx.ImagesData
@@ -86,7 +86,10 @@ namespace csharp_demo_app.Controllers
             var image = await imagesCtx.ImagesData
                 .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
             if (image == null)
+            {
+                _logger.LogError($"Image: {imageId}, can't be found.");
                 return NotFound();
+            }
 
             return File(image.ContentData, image.ContentType);
         }
@@ -100,12 +103,18 @@ namespace csharp_demo_app.Controllers
             var image = await imagesCtx.ImagesData
                 .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
             if (image == null)
+            {
+                _logger.LogError($"Image: {imageId}, can't be found.");
                 return NotFound();
-            
+            }
+
             imagesCtx.ImagesData.Remove(image);
             if (await imagesCtx.SaveChangesAsync(cancellationToken) == 0)
+            {
+                _logger.LogError($"Image: {imageId}, cannot be deleted.");
                 return Problem("The image can't be deleted.");
-            
+            }
+
             return Ok();
         }
     }
