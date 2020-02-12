@@ -1,3 +1,5 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -6,10 +8,8 @@ namespace csharp_demo_app
 {
     public class ErrorInjectionMiddleware
     {
-        private const string KeySleep = "rs.sleep";
-        private const string KeyStatus = "rs.status";
-        
         private readonly RequestDelegate _next;
+        private readonly Random _random = new Random();
 
         public ErrorInjectionMiddleware(RequestDelegate next)
         {
@@ -18,18 +18,32 @@ namespace csharp_demo_app
 
         public async Task Invoke(HttpContext context)
         {
-            var keySleep = context.Request.Query[KeySleep];
-            var keyStatus = context.Request.Query[KeyStatus];
+            const string keySleep = "rs.sleep";
+            const string keyStatus = "rs.status";
+            const string keyFailurePercentage = "rs.failure";
 
-            if (keySleep != StringValues.Empty && int.TryParse(keySleep.ToString(), out var keySleepValue))
+            var qKeySleep = context.Request.Query[keySleep];
+            var qKeyStatus = context.Request.Query[keyStatus];
+            var qKeyFailurePercentage = context.Request.Query[keyFailurePercentage];
+
+            if (qKeySleep != StringValues.Empty && int.TryParse(qKeySleep.ToString(), out var keySleepValue))
                 await Task.Delay(keySleepValue);
 
-            if (keyStatus != StringValues.Empty && int.TryParse(keyStatus.ToString(), out var keyStatusValue))
+            if (qKeyStatus != StringValues.Empty && int.TryParse(qKeyStatus.ToString(), out var keyStatusValue))
             {
                 context.Response.StatusCode = keyStatusValue;
                 return;
             }
-            
+
+            if (qKeyFailurePercentage != StringValues.Empty && int.TryParse(qKeyFailurePercentage.ToString(), out var failurePercentage))
+            {
+                if (_random.Next(100) <= failurePercentage)
+                {
+                    context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                    return;
+                }
+            }
+
             await _next(context);
         }
     }
