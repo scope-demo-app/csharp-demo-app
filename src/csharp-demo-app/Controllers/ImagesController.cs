@@ -81,8 +81,8 @@ namespace csharp_demo_app.Controllers
         public async Task<IActionResult> GetImage(Guid imageId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Getting image: {imageId}");
-            await using var imagesCtx = new ImagesContext();
-
+            await using var imagesCtx = ImagesContext.GetBalancedContext();
+            
             var image = await imagesCtx.ImagesData
                 .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
             if (image == null)
