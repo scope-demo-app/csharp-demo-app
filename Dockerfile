@@ -1,13 +1,11 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 RUN dotnet tool install --global ScopeAgent.Runner  --version 0.1.22-beta.5
 WORKDIR /app
-
-# Copy csproj and restore as distinct layers
-COPY ./src/csharp-demo-app/*.csproj ./
-RUN dotnet restore
+COPY . ./
 
 # Copy everything else and build
-COPY ./src/csharp-demo-app/. ./
+RUN cd ./src/csharp-demo-app/
+RUN dotnet restore
 RUN dotnet build -c Release -o out
 WORKDIR /app/out
 RUN /root/.dotnet/tools/scope-run --apply-coverage 
