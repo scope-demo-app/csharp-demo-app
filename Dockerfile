@@ -17,5 +17,5 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 COPY --from=build-env /root/.dotnet/tools /root/.dotnet/tools
 COPY ./.git ./.git
-RUN ls -l
+ENV SCOPE_CODE_PATH=True
 ENTRYPOINT ["/root/.dotnet/tools/scope-run", "dotnet", "./csharp-demo-app.dll"]

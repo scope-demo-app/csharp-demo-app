@@ -25,15 +25,22 @@ namespace csharp_demo_app.Controllers
         }
 
         [HttpGet("restaurant/{restaurantId}")]
-        public IAsyncEnumerable<Guid> GetRestaurantImages(Guid restaurantId)
+        public async Task<IEnumerable<Guid>> GetRestaurantImages(Guid restaurantId)
         {
             _logger.LogInformation($"Getting all images for RestaurantId: {restaurantId}");
-            var ctx = new ImagesContext();
-            Response.RegisterForDisposeAsync(ctx);
-            return ctx.ImagesData
+            await using var ctx = ImagesContext.GetBalancedContext();
+
+            var ids = await ctx.ImagesData
                 .Where(i => i.RestaurantId == restaurantId)
                 .Select(i => i.Id)
-                .AsAsyncEnumerable();
+                .ToListAsync().ConfigureAwait(false);
+
+            if (ids.Count == 0)
+                _logger.LogWarning($"No images were found for restaurant: {restaurantId}");
+            else
+                _logger.LogInformation($"Number of images found for {restaurantId}: {ids.Count}");
+            
+            return ids;
         }
 
         [HttpPost("restaurant/{restaurantId}")]
@@ -71,6 +78,7 @@ namespace csharp_demo_app.Controllers
             };
             imagesCtx.ImagesData.Add(imgData);
 
+            _logger.LogInformation("Writing image data to database...");
             await imagesCtx.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             _logger.LogInformation("[RestaurantId: {restaurantId}] Images saved with Id: {Id}", restaurantId, imgData.Id);
@@ -81,7 +89,7 @@ namespace csharp_demo_app.Controllers
         public async Task<IActionResult> GetImage(Guid imageId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Getting image: {imageId}");
-            await using var imagesCtx = ImagesContext.GetBalancedContext();
+            await using var imagesCtx = new ImagesContext();
             
             var image = await imagesCtx.ImagesData
                 .FirstOrDefaultAsync(i => i.Id == imageId, cancellationToken).ConfigureAwait(false);
@@ -90,7 +98,7 @@ namespace csharp_demo_app.Controllers
                 _logger.LogError($"Image: {imageId}, can't be found.");
                 return NotFound();
             }
-
+            _logger.LogInformation($"Image: {imageId}, found with {image.ContentData.Length} bytes");
             return File(image.ContentData, image.ContentType);
         }
 
@@ -115,6 +123,7 @@ namespace csharp_demo_app.Controllers
                 return Problem("The image can't be deleted.");
             }
 
+            _logger.LogInformation($"Image: {imageId}, has been deleted.");
             return Ok();
         }
     }
