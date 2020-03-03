@@ -28,6 +28,8 @@ namespace csharp_demo_app.Controllers
         public async Task<IEnumerable<Guid>> GetRestaurantImages(Guid restaurantId)
         {
             _logger.LogInformation($"Getting all images for RestaurantId: {restaurantId}");
+            Agent.Tracer.ActiveSpan?.SetTag("CUSTOM_KEY", "CUSTOM_VALUE");
+
             await using var ctx = ImagesContext.GetBalancedContext();
 
             var ids = await ctx.ImagesData
@@ -47,6 +49,7 @@ namespace csharp_demo_app.Controllers
         public async Task<IActionResult> PostImage(Guid restaurantId, CancellationToken cancellationToken)
         {
             _logger.LogInformation("[RestaurantId: {restaurantId}] Storing a new image", restaurantId);
+            Agent.Tracer.ActiveSpan?.SetTag("CUSTOM_KEY", "CUSTOM_VALUE");
 
             string contentType;
             Stream fileStream;
@@ -89,6 +92,7 @@ namespace csharp_demo_app.Controllers
         public async Task<IActionResult> GetImage(Guid imageId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Getting image: {imageId}");
+            Agent.Tracer.ActiveSpan?.SetTag("CUSTOM_KEY", "CUSTOM_VALUE");
             await using var imagesCtx = new ImagesContext();
             
             var image = await imagesCtx.ImagesData
@@ -106,6 +110,7 @@ namespace csharp_demo_app.Controllers
         public async Task<IActionResult> DeleteImage(Guid imageId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Deleting image: {imageId}");
+            Agent.Tracer.ActiveSpan?.SetTag("CUSTOM_KEY", "CUSTOM_VALUE");
             await using var imagesCtx = new ImagesContext();
             
             var image = await imagesCtx.ImagesData
