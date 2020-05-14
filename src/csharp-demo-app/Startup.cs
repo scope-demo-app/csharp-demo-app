@@ -39,6 +39,7 @@ namespace csharp_demo_app
             });
             services.AddHealthChecks();
             Console.WriteLine("Applying migrations...");
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             using var ctx = new ImagesContext();
             try
             {
@@ -46,7 +47,7 @@ namespace csharp_demo_app
             }
             catch
             {
-                Thread.Sleep(TimeSpan.FromSeconds(20));
+                Thread.Sleep(TimeSpan.FromSeconds(30));
                 ctx.Database.Migrate();
             }
         }
@@ -59,7 +60,6 @@ namespace csharp_demo_app
             app.UseCors("all"); 
             app.UseRouting();
             app.UseAuthorization();
-            app.AddScopeAgent();
             app.UseMiddleware<ErrorInjectionMiddleware>();
             app.UseEndpoints(endpoints =>
             {
