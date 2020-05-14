@@ -59,7 +59,6 @@ namespace csharp_demo_app
             app.UseCors("all"); 
             app.UseRouting();
             app.UseAuthorization();
-            app.AddScopeAgent();
             app.UseMiddleware<ErrorInjectionMiddleware>();
             app.UseEndpoints(endpoints =>
             {
