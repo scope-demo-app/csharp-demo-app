@@ -48,6 +48,9 @@ services:
       - GITHUB_SHA
       - GITHUB_REF
       - SCOPE_CODE_PATH
+      - SCOPE_RUNNER_ENABLED
+      - SCOPE_RUNNER_INCLUDE_BRANCHES
+      - SCOPE_RUNNER_EXCLUDE_BRANCHES
     links:
       - sqlserver
       
