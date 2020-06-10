@@ -1,5 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
-RUN dotnet tool install --global ScopeAgent.Runner  --version 0.2.0
+RUN dotnet tool install --global ScopeAgent.Runner  --version 0.3.0-pre.1
 WORKDIR /app
 COPY . ./
 
@@ -18,4 +18,5 @@ COPY --from=build-env /app/out .
 COPY --from=build-env /root/.dotnet/tools /root/.dotnet/tools
 COPY ./.git ./.git
 ENV SCOPE_CODE_PATH=True
+ENV SCOPE_RUNNER_ENABLED=True
 ENTRYPOINT ["/root/.dotnet/tools/scope-run", "dotnet", "./csharp-demo-app.dll"]
