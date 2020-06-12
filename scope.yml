@@ -13,3 +13,6 @@ scope:
       payload: true
     db:
       statement_values: true
+
+  runner:
+    enabled: true
